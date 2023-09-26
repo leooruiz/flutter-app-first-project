@@ -7,7 +7,7 @@ Future<Database> getDataBase() async {
   return openDatabase(
     path,
     onCreate: (db, version) {
-      db.execute(TaskDao.tableSql);
+      db.execute(TaskDao.tableSql); //executar tabela
     },
     version: 1,
   );
