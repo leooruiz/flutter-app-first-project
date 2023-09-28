@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_studies/first_project/components/task.dart';
+import 'package:flutter_studies/first_project/data/task_dao.dart';
 import 'package:flutter_studies/first_project/data/task_inherited.dart';
 
 class FormScreen extends StatefulWidget {
@@ -156,15 +158,11 @@ class _FormScreenState extends State<FormScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            String nome = '';
-                            print(nome.isEmpty);
-                            // print(nameController.text);
-                            // print(int.parse(difficultyController.text));
-                            // print(imageController.text);
-                            TaskInherited.of(widget.taskContext).newTask(
-                                nameController.text,
-                                imageController.text,
-                                int.parse(difficultyController.text));
+                            TaskDao().save(Task(
+                                name: nameController.text,
+                                photo: imageController.text,
+                                difficulty:
+                                    int.parse(difficultyController.text)));
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text(
                                     "A tarefa '${nameController.text}' foi criada com sucesso!")));
