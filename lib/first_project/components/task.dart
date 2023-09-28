@@ -200,40 +200,4 @@ class _TaskState extends State<Task> {
       ),
     );
   }
-
-  imageBuilding() {
-    try {
-      widget.photo.contains('https://')
-          ? Image.network(
-              widget.photo,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Image.asset(
-                    'lib/first_project/assets/imgs/nophoto.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                );
-              },
-              fit: BoxFit.cover,
-            )
-          : Image.asset(
-              widget.photo,
-              fit: BoxFit.cover,
-              errorBuilder: (BuildContext context, Object exception,
-                  StackTrace? stackTrace) {
-                return Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Image.asset(
-                    'lib/first_project/assets/imgs/nophoto.png',
-                    fit: BoxFit.fitWidth,
-                  ),
-                );
-              },
-            );
-    } on FlutterError {
-      print("Couldn't find the asset or network");
-    }
-  }
 }
