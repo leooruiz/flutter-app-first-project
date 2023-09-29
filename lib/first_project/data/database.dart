@@ -1,5 +1,6 @@
 import 'package:flutter_studies/first_project/data/task_dao.dart';
 import 'package:sqflite/sqflite.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
 Future<Database> getDataBase() async {
@@ -12,5 +13,3 @@ Future<Database> getDataBase() async {
     version: 1,
   );
 }
-
-
