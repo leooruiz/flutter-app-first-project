@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_studies/first_project/components/difficulty_widget.dart';
+import 'package:flutter_studies/first_project/data/task_dao.dart';
 
 import '../data/all_level_inheritered.dart';
 
@@ -113,51 +114,79 @@ class _TaskState extends State<Task> {
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: SizedBox(
-                              height: 55,
-                              width: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (((widget.level / difficulty) / 10) >= 1) {
-                                    widget.level = 1;
-                                    int number = Random().nextInt(3);
-                                    switch (number) {
-                                      case 0:
-                                        color =
-                                            const Color.fromARGB(255, 0, 99, 3);
-                                      case 1:
-                                        color = Colors.red;
-
-                                      case 2:
-                                        color = Colors.brown;
-
-                                      case 3:
-                                        color = Colors.yellow;
-                                    }
-                                  } else {
-                                    widget.level++;
-                                    AllLevelInherited.of(context)
-                                        .overAllLevel += 1 / 10 * difficulty;
-                                  }
-                                  setState(() {});
-                                  // print(widget.level);
-                                },
-                                child: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_drop_up,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    right: 12.0, bottom: 8, top: 8),
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 20,
+                                  child: ElevatedButton(
+                                    child: const Icon(
+                                      size: 18,
+                                      color: Colors.white,
+                                      Icons.delete_outline_rounded,
                                     ),
-                                    Text(
-                                      'UP',
-                                      style: TextStyle(fontSize: 12),
-                                    )
-                                  ],
+                                    onPressed: () {
+                                      TaskDao().delete(widget.name);
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 12.0,
+                                ),
+                                child: SizedBox(
+                                  height: 55,
+                                  width: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (((widget.level / difficulty) / 10) >=
+                                          1) {
+                                        widget.level = 1;
+                                        int number = Random().nextInt(3);
+                                        switch (number) {
+                                          case 0:
+                                            color = const Color.fromARGB(
+                                                255, 0, 99, 3);
+                                          case 1:
+                                            color = Colors.red;
+
+                                          case 2:
+                                            color = Colors.brown;
+
+                                          case 3:
+                                            color = Colors.yellow;
+                                        }
+                                      } else {
+                                        widget.level++;
+                                        AllLevelInherited.of(context)
+                                                .overAllLevel +=
+                                            1 / 10 * difficulty;
+                                      }
+                                      setState(() {});
+                                      // print(widget.level);
+                                    },
+                                    child: const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_drop_up,
+                                        ),
+                                        Text(
+                                          'UP',
+                                          style: TextStyle(fontSize: 12),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           )
                         ],
                       ),
