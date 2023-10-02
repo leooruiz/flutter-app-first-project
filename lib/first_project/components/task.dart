@@ -130,7 +130,8 @@ class _TaskState extends State<Task> {
                                       Icons.delete_outline_rounded,
                                     ),
                                     onPressed: () {
-                                      TaskDao().delete(widget.name);
+                                      showMyDialog();
+                                      setState(() {});
                                     },
                                   ),
                                 ),
@@ -227,6 +228,34 @@ class _TaskState extends State<Task> {
           ],
         ),
       ),
+    );
+  }
+
+  showMyDialog() async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Deletar?"),
+          content: const Text("Certeza que deseja deletar a tarefa?"),
+          actions: [
+            TextButton(
+              child: const Text("Yes"),
+              onPressed: () {
+                TaskDao().delete(widget.name);
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: const Text("No"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
