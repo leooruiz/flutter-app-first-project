@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_studies/first_project/components/task.dart';
 import 'package:flutter_studies/first_project/data/all_level_inheritered.dart';
+import 'package:flutter_studies/first_project/data/task_dao.dart';
 import 'package:flutter_studies/first_project/data/task_inherited.dart';
 import 'package:flutter_studies/first_project/screens/form_screen.dart';
 
@@ -60,9 +62,79 @@ class _InitialScreenState extends State<InitialScreen> {
               ),
             )),
       ),
-      body: ListView(
+      body: Padding(
         padding: const EdgeInsets.only(top: 8, bottom: 70),
-        children: TaskInherited.of(context).taskList,
+        child: FutureBuilder<List<Task>>(
+            future: TaskDao().findAll(),
+            builder: (context, snapshot) {
+              //snapshot é reponsável pelos dados do findAll(que vem do banco de dados).
+              List<Task>? items = snapshot.data;
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('Carregando')
+                      ],
+                    ),
+                  );
+                case ConnectionState.waiting:
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('Carregando')
+                      ],
+                    ),
+                  );
+                case ConnectionState.active:
+                  return const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('Carregando')
+                      ],
+                    ),
+                  );
+                case ConnectionState.done:
+                  if (snapshot.hasData && items != null) {
+                    if (items.isNotEmpty) {
+                      return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Task task = items[index];
+                            return task;
+                          });
+                    }
+
+                    return const Center(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 128,
+                            ),
+                            Text(
+                              'Não há nenhuma tarefa',
+                              style: TextStyle(fontSize: 32),
+                            )
+                          ]),
+                    );
+                  }
+                  return const Text('Erro ao carregar tarefas');
+              }
+
+              //ListView builder permite que contruamos apenas as tarefas na tela, sem pesar muito para carregar toda a tela, apenas o que está scrollado
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
@@ -72,7 +144,9 @@ class _InitialScreenState extends State<InitialScreen> {
               MaterialPageRoute(
                   builder: ((contextNew) => FormScreen(
                         taskContext: context,
-                      ))));
+                      )))).then((value) => setState(() {
+                print('tarefa criada!');
+              }));
         },
         child: const Icon(Icons.add),
       ),
